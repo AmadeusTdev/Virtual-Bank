@@ -1,0 +1,432 @@
+body {
+    background-color: rgb(252, 240, 255);
+
+    /* Alignement central des éléments dans le body */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Police de tout les textes de la page */
+p, h1, h2, h3, h4, h5 {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Nom de l'application avec version */
+header {
+    width: 100%;
+    height: 3em;
+
+    /* Positionner le texte à l'intérieur */
+    display: flex;
+    align-items: center;
+
+    /* Espace en dessous */
+    margin-bottom: 0.2em;
+}
+.appName {
+    width: 100%;
+    text-align: center;
+    font-size: 1.5em;
+    color:rgb(69, 69, 69);
+    font-weight: bold;
+}
+
+/* Menu et bouttons de navigations */
+nav {
+    width: 100%; /* 100% du body */
+    display: flex;
+    justify-content: space-around;
+    height: 1.8em;
+}
+.navButton {
+    background-color: rgb(253, 249, 253);
+    color:rgb(69, 69, 69);
+    width: 17%;
+    height: 2.4em;
+    font-weight: bold;
+    border-radius: 0.3em;
+    /* Bordure */
+    border: 0.15em solid rgb(233, 219, 233);
+
+    transition:
+        background-color .5s,
+        width .5s,
+        height .5s;
+}
+.navButton:hover {
+    cursor: pointer;
+
+    background-color: rgb(243, 232, 252);
+    width: 20%;
+    height: 2.6em;
+}
+
+/* Titre des sections */
+h1, h2, h3, h4, h5 {
+    width: 50%;
+    height: 1.2em;
+    font-size: 1.8em;
+
+    justify-self: center; /* Pour être en milieu de page */
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    margin-top:20px;
+    margin-bottom:20px;
+
+    background-color: rgb(229, 244, 248);
+    border-radius: 0.2em;  
+    /* Bordure */
+    border: 0.06em solid rgb(198, 220, 232);
+}
+.titreSection {
+    text-align: center;
+    color:rgb(69, 69, 69);
+    font-weight: bold;
+    font-size: 0.7em;
+}
+
+/* Sections */
+section {
+    width: 100%;
+}
+
+/* Tutorial section */
+.titleContainer {
+    width: 45%;
+    height: 1.8em;
+
+    background-color: rgb(248, 240, 233);
+    border-radius: 0.3em;
+
+    display: flex;
+    align-items: center;
+
+    /* Bordure */
+    border: 0.1em solid rgb(245, 229, 210);
+}
+.titre {
+    text-align: center;
+    font-size: 1em;
+    color:rgb(253, 218, 163);
+    font-weight: bold;
+
+    margin-left: 0.5em;
+}
+
+/* Bank stats section */
+.moneyContainer {
+    width: 30%;
+    height: 1.8em;
+
+    background-color: rgb(239, 248, 233);
+    border-radius: 0.3em;
+
+    justify-self: center;
+    margin-bottom: 0.8em;
+
+    display: flex;
+    align-items: center;
+
+    /* Bordure */
+    border: 0.1em solid rgb(207, 231, 201);
+}
+#total {
+    width: 100%;
+    text-align: center;
+    font-size: 1.3em;
+    font-weight: bold;
+    color:rgb(164, 218, 180);
+}
+.chart-container {
+    width: 100%;
+    height: 19em;
+    margin-bottom: 19.5em;
+
+    display: flex;
+    justify-content: center;
+}
+.graphic {
+    display: flex;
+}
+
+.b_categoriesContainer {
+    width: 90%;
+    justify-self: center;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+
+    margin-bottom: .5em;
+}
+.b_category {
+    width: 18%;
+    height: 2em;
+
+    display: flex;
+    flex-direction: row;
+
+    margin: .2em;
+
+    background-color: rgb(251, 228, 209);
+    border-radius: 1em;
+    /* Bordure */
+    border: 0.14em solid rgb(250, 202, 162);
+}
+.b_categoryName {
+    width: 75%;
+
+    color: rgb(224, 170, 109);
+    font-size: 13m;
+    font-weight: bold;
+    text-align: center;
+
+    margin-top: .5em;
+}
+.b_categoryDelete {
+    width: 20%;
+}
+
+.titleContainer2 {
+    width: 45%;
+    height: 1.8em;
+
+    background-color: rgb(248, 240, 233);
+    border-radius: 0.3em;
+
+    justify-self: center;
+    display: flex;
+    align-items: center;
+
+    /* Bordure */
+    border: 0.1em solid rgb(245, 229, 210);
+}
+#addCategoryText {
+    width: 100%;
+}
+.b_newCategory {
+    width: 45%;
+    height: 2.5em;
+    justify-self: center;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+}
+.b_newCategoryName {
+    width: 60%;
+    height: 80%;
+
+    color:rgb(207, 207, 207);
+    font-weight: bold;
+    text-align: center;
+    font-size: 1.2em;
+
+    background-color: rgb(244, 247, 163);
+    border-radius: .5em;
+    /* Bordure */
+    border: 0.1em solid rgb(228, 222, 45);
+}
+.b_addCategoryButton {
+    width: 35%;
+    height: 90%;
+
+    color:rgb(209, 206, 67);
+    font-weight: bold;
+    text-align: center;
+    font-size: 1.2em;
+
+    background-color: rgb(244, 247, 163);
+    border-radius: .5em;
+    /* Bordure */
+    border: 0.1em solid rgb(228, 222, 45);
+}
+.b_addCategoryButton:hover {
+    background-color: rgb(230, 232, 155);
+}
+
+/* Earnings section */
+.templatesContainer {
+    width: 85%;
+    justify-self: center;
+}
+.template {
+    background-color: rgb(247, 232, 251);
+    margin-bottom: 1em;
+
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    /* Bordure */
+    border-radius: .25em;
+    border: 0.1em solid rgb(231, 220, 234);
+}
+.t_name {
+    width: 100%;
+    height: 1.5em;
+
+    color: rgb(165, 165, 165);
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.5em;
+
+    margin-top: 0.25em;
+    margin-bottom: 0em;
+}
+.t_moneyInput {
+    width: 30%;
+    height: 1.5em;
+
+    text-align: center;
+    font-weight: bold;
+    color: rgb(177, 164, 123);
+
+    margin-bottom: 0.25em;
+
+    background-color: rgb(255, 240, 192);
+
+    /* Bordure */
+    border-radius: 50em;
+    border: 0.15em solid rgb(215, 194, 122);
+}
+.t_addButton {
+    width: 30%;
+    height: 1.5em;
+
+    margin-top: 0.25em;
+    margin-bottom: 0.25em;
+
+    background-color: rgb(221, 248, 226);
+
+    font-weight: bold;
+    color: rgb(98, 98, 98);
+
+    /* Bordure */
+    border-radius: .25em;
+    border: 0.15em solid rgb(159, 208, 170);
+}
+.t_addButton:hover {
+    cursor: pointer;
+    background-color: rgb(210, 237, 216);
+}
+.t_addCategory {
+    width: 25%;
+    height: 1.5em;
+
+    margin-top: 0.25em;
+    margin-bottom: 0.5em;
+
+    background-color: rgb(198, 244, 230);
+
+    font-weight: bold;
+    color: rgb(98, 98, 98);
+
+    /* Bordure */
+    border-radius: .25em;
+    border: 0.15em solid rgb(168, 223, 218);
+}
+.t_addCategory:hover {
+    cursor: pointer;
+    background-color: rgb(188, 231, 218);
+}
+.t_categoriesContainer {
+    background-color: rgb(247, 198, 221);
+
+    width: 95%;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+
+    flex-wrap: wrap;
+
+    margin-bottom: 0.5em;
+
+    /* Bordure */
+    border-radius: .25em;
+    border: 0.1em solid rgb(207, 148, 175);
+}
+
+.option {
+    background-color: rgb(246, 189, 191);
+
+    width: 30%;
+    height: 30%;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    margin-left: 0.3em;
+    margin-right: 0.3em;
+
+    margin-top: 0.3em;
+    margin-bottom: 0.3em;
+
+    /* Bordure */
+    border-radius: .25em;
+    border: 0.1em solid rgb(211, 130, 131);
+}
+.o_category {
+    width: 30%;
+    text-align: center;
+
+    background-color: rgb(236, 188, 218);
+
+    font-weight: bold;
+    color: rgb(143, 109, 143);
+
+    /* Bordure */
+    border-radius: .2em;
+    border: 0.15em solid rgb(208, 143, 183);
+}
+.o_value {
+    width: 30%;
+    text-align: center;
+
+    background-color: rgb(236, 188, 218);
+
+    font-weight: bold;
+    color: rgb(143, 109, 143);
+
+    /* Bordure */
+    border-radius: .2em;
+    border: 0.15em solid rgb(208, 143, 183);
+}
+.o_type {
+    width: 30%;
+    text-align: center;
+
+    background-color: rgb(236, 188, 218);
+
+    font-weight: bold;
+    color: rgb(143, 109, 143);
+
+    /* Bordure */
+    border-radius: .2em;
+    border: 0.15em solid rgb(208, 143, 183);
+}
+.o_delete {
+    width: 10%;
+}
+
+#create {
+    width: 100%;
+    height: 50px;
+    font-size: 1.5em;
+}

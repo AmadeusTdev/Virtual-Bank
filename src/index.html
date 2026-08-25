@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link href="index.css" rel="stylesheet">
+        <!-- Plugin de graphes -->
+        <script src="js/package/dist/chart.umd.js" defer></script>
+        <script src="js/chartjs-plugin-datalabels.js" defer></script>
+        <!-- Code -->
+        <script type="module" src="js/display.js" defer></script>
+    </head>
+    <body>
+        <header>
+            <p class="appName">Bank Monitor (v0)</p>
+        </header>
+        <nav>
+            <button class="navButton" id="b_tuto" type="button">Tutorial</button>
+            <button class="navButton" id="b_bank" type="button">Bank Stats</button>
+            <button class="navButton" id="b_earning" type="button">Earnings</button>
+            <button class="navButton" id="b_spending" type="button">Spendings</button>
+            <button class="navButton" id="b_activity" type="button">Activity Stats</button>
+        </nav>
+        <section id="s_tuto">
+            <h1><p class="titreSection">Tutorial</p></h1>
+
+            <div class="titleContainer">
+                <p class="titre">How to use</p>
+            </div>
+            <p>&#x2022; Cette application sert à gérer la manière dont l'argent est répartit dans chaques catégories (à l'aide d'une banque virtuel) pour faire les comptes.</p>
+
+            <div class="titleContainer">
+                <p class="titre">Bank Stats</p>
+            </div>
+            <p>&#x2022; Permet de voir la quantité et le pourcentage d'argent actuellement réservé pour chaque catégories.</p>
+            
+            <div class="titleContainer">
+                <p class="titre">Earning</p>
+            </div>
+            <p>&#x2022; Permet de créer des configurations permettant de répartir une certaine somme dans chaque catégories (exemple: 10€ divertissement, 30% nourriture, 70% logement) ou bien de transférer entre deux catégories.</p>
+            
+            <div class="titleContainer">
+                <p class="titre">Spending</p>
+            </div>
+            <p>&#x2022; Permet de retirer de l'argent dans la banque virtuel dans une catégorie.</p>
+
+            <div class="titleContainer">
+                <p class="titre">Activity Stats</p>
+            </div>
+            <p>&#x2022; Permet de voir l'historique de la banque (ajout ou retrait d'argent) ainsi que de faire différente statistiques sur une période choisis.</p>
+        </section>
+        <section id="s_bank">
+            <h2><p class="titreSection">Bank Stats</p></h2>
+            <div class="moneyContainer">
+                <p id="total"></p>
+            </div>
+            <div class="chart-container">
+                <canvas id="graphic"></canvas>
+            </div>
+            <div class="b_categoriesContainer" id="conteneur_categories">
+                <template id="template_category">
+                    <div class="b_category">
+                        <p class="b_categoryName">categoryName</p>
+                        <input class="b_categoryDelete" type="image" src="./img/trash-can-icon.png" />
+                    </div>
+                </template>
+            </div>
+            <div class="titleContainer2">
+                <p class="titre" id="addCategoryText">Ajouter une catégorie:</p>
+            </div>
+            <div class="b_newCategory">
+                <input class="b_newCategoryName" type="text" name="categoryName" value="" id="b_InputCategoryName"/>
+                <button class="b_addCategoryButton" id="b_addCategory">Add</button>
+            </div>
+        </section>
+        <section id="s_earning">
+            <h3><p class="titreSection">Earnings</p></h3>
+            <div class="templatesContainer" id="conteneur_configs">
+
+                <!-- Template contenant une configuration -->
+                <template id="template_config">
+                    <div class="template">
+                        <p class="t_name">Template_Name</p>
+                        <input class="t_moneyInput" type="text" name="Earned" value="0"/>
+                        <button class="t_addButton" id="t_add">Add to bank</button>
+                        <button class="t_addCategory" id="t_addCategory">Add category</button>
+                        <div class="t_categoriesContainer" id="conteneur_options">
+
+                            <!-- Template contenant l'option -->
+                            <template id="template_option">
+                                <div class="option">
+                                    <select class="o_category" name="category">
+                                    </select>
+                                    <input class="o_value" type="text" name="Repartition" value="15"/>
+                                    <select class="o_type" name="type">
+                                        <option value="%">%</option>
+                                        <option value="€">€</option>
+                                    </select>
+                                    <input class="o_delete" type="image" src="./img/trash-can-icon.png" />
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+                </template>
+            </div>
+            <button id="create">+ New configuration</button>
+        </section>
+        <section id="s_spending">
+            <h4><p class="titreSection">Spendings</p></h4>
+        </section>
+        <section id="s_activity">
+            <h5><p class="titreSection">Activity</p></h5>
+        </section>
+    </body>
+</html>
