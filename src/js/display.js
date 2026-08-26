@@ -2,13 +2,19 @@ import {
     getBankData,
 
     getEarningsData,
-    setEarningsData,
+    config_option_remove,
+    config_option_modify,
+    config_add,
+    config_remove,
+    config_use,
 
     getCategoriesData,
     categoriesList_add,
     categoriesList_remove,
 
 } from "./logic.js"
+
+const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 /*
 --------------------------------// Navigation entre les sections
@@ -52,7 +58,16 @@ afficherSection("s_tuto");
 --------------------------------// Actualisation de l'affichage de la banque
 */
 async function drawBank() {
-    const ctx = document.getElementById("graphic");
+
+    // On enlève le graphique précédent
+    const graphicContainer = document.getElementById("graphic-container");
+    graphicContainer.innerHTML = "";
+
+    // On créer un nouveau graphique
+    const ctx = document.createElement("canvas");
+    ctx.id = "graphic";
+    graphicContainer.appendChild(ctx);
+
     // Get bank data
     const [bankData, total] = await getBankData();
     // Graph
@@ -100,8 +115,6 @@ async function loadBankCategories() {
             }
         })
 
-        //categoriesData.find((element) => element == newCategoryName)
-
         conteneur_categories.appendChild(category_clone);
     }
 }
@@ -111,7 +124,7 @@ async function loadBankCategories() {
 */
 async function loadConfigs() {
 
-    var earningsData = await getEarningsData();
+    const earningsData = await getEarningsData();
     const categoriesData = await getCategoriesData();
 
     // On vide le conteneur avant de le remplir (on n'enlève pas la template)
@@ -127,26 +140,105 @@ async function loadConfigs() {
         // Remplire la configuration avec chaque option
         const conteneur_option = config_clone.querySelector("#conteneur_options");
         const template_option = config_clone.querySelector("#template_option");
-        for (const option of earningsData["Configs"][configName]) {
+        for (const optionIndex of Object.keys(earningsData["Configs"][configName])) {
+            const option = earningsData["Configs"][configName][optionIndex];
             const option_clone = template_option.content.cloneNode(true); // True pour récursif
 
             // Create an "option" for each possible category that can be selected
-           const categorySelector = option_clone.querySelector(".o_category")
+            const option_select_category = option_clone.querySelector(".o_category");
+            const option_select_value = option_clone.querySelector(".o_value");
+            const option_select_type = option_clone.querySelector(".o_type");
+
             for (const category of categoriesData) {
                 const optionElement = document.createElement('option');
                 optionElement.text = category;
                 optionElement.value = category;
-                categorySelector.options.add(optionElement);
+                option_select_category.options.add(optionElement);
             }
+            
+            // On remplis avec les données de base
+            option_select_category.value = option[0];
+            option_select_value.value = option[1];
+            option_select_type.value = option[2];
 
-            categorySelector.value = option[0];
+            // Boutton pour détruire l'option
+            option_clone.querySelector(".o_delete").addEventListener("click", async (e) => {
+                // Delete option
+                const deletedOption = await config_option_remove(configName, optionIndex);
+                if (deletedOption) {
+                    // On recharge la section
+                    loadConfigs();
+                }
+            })
+            // Modifier l'option
+            option_select_category.addEventListener("change", async (e) => {
+                // Changement de catégorie
+                const newValue = option_select_category.value;
+                option[0] = newValue;
+                // Mise à jour des données
+                await config_option_modify(configName, optionIndex, option);
+            })
+            option_select_value.addEventListener("change", async (e) => {
+                // Changement de valeur
+                const newValue = option_select_value.value;
+                option[1] = newValue;
+                // Mise à jour des données
+                await config_option_modify(configName, optionIndex, option);
+            })
+            option_select_type.addEventListener("change", async (e) => {
+                // Changement de type
+                const newValue = option_select_type.value;
+                option[2] = newValue;
+                // Mise à jour des données
+                await config_option_modify(configName, optionIndex, option);
+            })
 
-            option_clone.querySelector(".o_value").value = option[1];
-            option_clone.querySelector(".o_type").value = option[2];
-
+            // Ajouter le clone au conteneur
             conteneur_option.appendChild(option_clone);
         }
 
+        config_clone.querySelector("#t_addCategory").addEventListener("click", async (e) => {
+            // Add new option
+            // On reprend des nouvelles données pour être à jour
+            const new_earningsData = await getEarningsData();
+            var unusedIndex = 0;
+            while (new_earningsData["Configs"][configName]["op"+unusedIndex] != null) {
+                unusedIndex++;
+            }
+            // On a trouvé un index libre pour une nouvelle option dans la configuration
+            await config_option_modify(configName, "op"+unusedIndex, ["Autres", 0, "%"]);
+            // On recharge la section
+            loadConfigs();
+        })
+        config_clone.querySelector(".t_delete").addEventListener("click", async (e) => {
+            // Destroy template
+            await config_remove(configName);
+            // On recharge la section
+            loadConfigs();
+        })
+
+        var cooldown = false;
+        const inputAmount = config_clone.querySelector(".t_moneyInput");
+        const addToBankButton = config_clone.querySelector("#t_add");
+        addToBankButton.addEventListener("click", async (e) => {
+            if (!cooldown) {
+                cooldown = true;
+
+                // Use configuration
+                const valueAdding = inputAmount.value;
+                const success = await config_use(configName, valueAdding);
+                if (success == true) {
+                    addToBankButton.textContent = "Successfully added!";
+                    inputAmount.value = 0;
+                } else {
+                    addToBankButton.textContent = success;
+                }
+                await delay(1000); // 1 seconde
+                addToBankButton.textContent = "Add to bank";
+
+                cooldown = false;
+            }
+        })
         // Ajouter le clone au conteneur
         conteneur_configs.appendChild(config_clone);
     }
@@ -157,7 +249,7 @@ async function loadConfigs() {
 */
 document.getElementById("b_addCategory").addEventListener("click", async (e) => {
     // On va chercher la liste des categories actuelles
-    var categoriesData = await getCategoriesData();
+    const categoriesData = await getCategoriesData();
     // On va chercher le nom de la categorie que l'utilisateur souhaite créer
     const newCategoryName = document.getElementById("b_InputCategoryName").value;
     // On ajoute la catégorie si elle ne s'y trouve pas
@@ -167,5 +259,13 @@ document.getElementById("b_addCategory").addEventListener("click", async (e) => 
             // On recharge la section
             loadBankCategories();
         }
+    }
+})
+document.getElementById("t_addConfig").addEventListener("click", async (e) => {
+    const newConfigName = document.getElementById("t_InputConfigName").value;
+    const configAjoutee = await config_add(newConfigName);
+    if (configAjoutee) {
+        // On recharge la section
+        loadConfigs();
     }
 })

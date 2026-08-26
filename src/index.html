@@ -52,7 +52,7 @@
             <div class="moneyContainer">
                 <p id="total"></p>
             </div>
-            <div class="chart-container">
+            <div class="chart-container" id="graphic-container">
                 <canvas id="graphic"></canvas>
             </div>
             <div class="b_categoriesContainer" id="conteneur_categories">
@@ -78,8 +78,11 @@
                 <!-- Template contenant une configuration -->
                 <template id="template_config">
                     <div class="template">
-                        <p class="t_name">Template_Name</p>
-                        <input class="t_moneyInput" type="text" name="Earned" value="0"/>
+                        <div class="configNameArea">
+                            <p class="t_name">Template_Name</p>
+                            <input class="t_delete" type="image" src="./img/trash-can-icon.png" />
+                        </div>
+                        <input class="t_moneyInput" id="t_input" type="number" name="Earned" value="0"/>
                         <button class="t_addButton" id="t_add">Add to bank</button>
                         <button class="t_addCategory" id="t_addCategory">Add category</button>
                         <div class="t_categoriesContainer" id="conteneur_options">
@@ -89,7 +92,7 @@
                                 <div class="option">
                                     <select class="o_category" name="category">
                                     </select>
-                                    <input class="o_value" type="text" name="Repartition" value="15"/>
+                                    <input class="o_value" type="number" name="Repartition" value="15"/>
                                     <select class="o_type" name="type">
                                         <option value="%">%</option>
                                         <option value="€">€</option>
@@ -101,7 +104,13 @@
                     </div>
                 </template>
             </div>
-            <button id="create">+ New configuration</button>
+            <div class="titleContainer2">
+                <p class="titre" id="addCategoryText">Ajouter une configuration:</p>
+            </div>
+            <div class="b_newCategory">
+                <input class="b_newCategoryName" type="text" name="categoryName" value="" id="t_InputConfigName"/>
+                <button class="b_addCategoryButton" id="t_addConfig">Add</button>
+            </div>
         </section>
         <section id="s_spending">
             <h4><p class="titreSection">Spendings</p></h4>
