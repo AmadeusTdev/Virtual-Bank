@@ -1,6 +1,11 @@
 import {
+    // Bank stats
     getBankData,
+    getCategoriesData,
+    categoriesList_add,
+    categoriesList_remove,
 
+    // Earnings
     getEarningsData,
     config_option_remove,
     config_option_modify,
@@ -8,9 +13,10 @@ import {
     config_remove,
     config_use,
 
-    getCategoriesData,
-    categoriesList_add,
-    categoriesList_remove,
+    // Spendings
+    getReal_BankData,
+    addMoney_to,
+    removeMoney_from,
 
 } from "./logic.js"
 
@@ -47,6 +53,7 @@ button_earning.addEventListener("click", function() {
 });
 button_spending.addEventListener("click", function() {
     afficherSection("s_spending");
+    loadSpendings();
 });
 button_activity.addEventListener("click", function() {
     afficherSection("s_activity");
@@ -107,13 +114,19 @@ async function loadBankCategories() {
 
         category_clone.querySelector(".b_categoryName").innerText = category;
         // Enlever la catégorie
-        category_clone.querySelector(".b_categoryDelete").addEventListener("click", async (e) => {
-            const categorieDetruite = await categoriesList_remove(category);
-            if (categorieDetruite) {
-                // On recharge la section
-                loadBankCategories();
-            }
-        })
+        if (category == "Autres") {
+            category_clone.querySelector(".b_categoryDelete").remove();
+            category_clone.querySelector(".b_categoryName").style.width = "100%";
+        } else {
+            category_clone.querySelector(".b_categoryDelete").addEventListener("click", async (e) => {
+                const categorieDetruite = await categoriesList_remove(category);
+                if (categorieDetruite) {
+                    // On recharge la section
+                    drawBank();
+                    loadBankCategories();
+                }
+            })
+        }
 
         conteneur_categories.appendChild(category_clone);
     }
@@ -228,19 +241,52 @@ async function loadConfigs() {
                 const valueAdding = inputAmount.value;
                 const success = await config_use(configName, valueAdding);
                 if (success == true) {
-                    addToBankButton.textContent = "Successfully added!";
+                    addToBankButton.textContent = "Succès de l'ajout!";
                     inputAmount.value = 0;
                 } else {
                     addToBankButton.textContent = success;
                 }
                 await delay(1000); // 1 seconde
-                addToBankButton.textContent = "Add to bank";
+                addToBankButton.textContent = "Ajouter à la Banque";
 
                 cooldown = false;
             }
         })
         // Ajouter le clone au conteneur
         conteneur_configs.appendChild(config_clone);
+    }
+}
+
+/*
+--------------------------------// Actualisation de l'affichage des options pour dépenser ou transférer de l'argent
+*/
+async function loadSpendings() {
+    const select_use_from = document.getElementById("select_use_from");
+    const select_transfer_from = document.getElementById("select_transfer_from");
+    const select_transfer_to = document.getElementById("select_transfer_to");
+
+    // On vide les options précédentes
+    function removeOptions(selectElement) {
+        var i, L = selectElement.options.length - 1;
+        for(i = L; i >= 0; i--) {
+            selectElement.remove(i);
+        }
+    }
+    removeOptions(select_use_from);
+    removeOptions(select_transfer_from);
+    removeOptions(select_transfer_to);
+
+    // On va chercher la liste des categories actuelles
+    const categoriesData = await getCategoriesData();
+
+    for (const category of categoriesData) {
+        const optionElement = document.createElement('option');
+        optionElement.text = category;
+        optionElement.value = category;
+
+        select_use_from.options.add(optionElement);
+        select_transfer_from.options.add(optionElement.cloneNode(true));
+        select_transfer_to.options.add(optionElement.cloneNode(true));
     }
 }
 
@@ -267,5 +313,65 @@ document.getElementById("t_addConfig").addEventListener("click", async (e) => {
     if (configAjoutee) {
         // On recharge la section
         loadConfigs();
+    }
+})
+
+var canSpend = true;
+const spend_button = document.getElementById("s_spend"); 
+spend_button.addEventListener("click", async (e) => {
+    if (canSpend) {
+        canSpend = false;
+
+        const selected_category_from = document.getElementById("select_use_from").value;
+        const amount_spending = document.getElementById("spending_amnt").value;
+
+        const user_bankData = await getReal_BankData();
+        if (user_bankData[selected_category_from] != null) {
+            if (user_bankData[selected_category_from] >= (+amount_spending)) {
+                // Use money from
+                removeMoney_from(selected_category_from, amount_spending);
+                spend_button.textContent = "Succès!";
+            } else {
+                spend_button.textContent = "Montant insuffisant!";
+            }
+        } else {
+            spend_button.textContent = "Catégorie invalide!";
+        }
+
+        await delay(1000); // 1 seconde
+        spend_button.textContent = "Dépenser";
+
+        canSpend = true;
+    }
+})
+var canTransfer = true;
+const transfer_button = document.getElementById("s_transfer");
+transfer_button.addEventListener("click", async (e) => {
+    if (canTransfer) {
+        canTransfer = false;
+
+        const selected_category_from = document.getElementById("select_transfer_from").value;
+        const selected_category_to = document.getElementById("select_transfer_to").value;
+        const amount_transferring = document.getElementById("transferring_amnt").value;
+
+        const user_bankData = await getReal_BankData();
+
+        if (user_bankData[selected_category_from] != null && user_bankData[selected_category_to] != null) {
+            if (user_bankData[selected_category_from] >= (+amount_transferring)) {
+                // Transfer money
+                removeMoney_from(selected_category_from, amount_transferring);
+                addMoney_to(selected_category_to, amount_transferring);
+                transfer_button.textContent = "Succès!";
+            } else {
+                transfer_button.textContent = "Montant insuffisant!";
+            }
+        } else {
+            transfer_button.textContent = "Catégories invalides!";
+        }
+
+        await delay(1000); // 1 seconde
+        transfer_button.textContent = "Transférer";
+
+        canTransfer = true;
     }
 })

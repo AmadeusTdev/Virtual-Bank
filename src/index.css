@@ -204,6 +204,8 @@ section {
     display: flex;
     align-items: center;
 
+    margin-top: .5em;
+
     /* Bordure */
     border: 0.1em solid rgb(245, 229, 210);
 }
@@ -435,4 +437,92 @@ section {
 }
 .o_delete {
     width: 10%;
+}
+
+/* Spendings section */
+#s_spending {
+    display: flex;
+}
+.action_container {
+    width: 80%;
+    justify-self: center;
+
+    background-color: rgb(247, 232, 251);
+
+    margin-bottom: 1em;
+
+    /* Bordure */
+    border-radius: .25em;
+    border: 0.1em solid rgb(231, 220, 234);
+}
+.choosing_container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    width: 100%;
+    height: 10em;
+}
+
+.use_text_from,
+.use_from,
+.use_text_amount,
+.use_amount,
+.transfer_text_from,
+.transfer_from,
+.transfer_text_to,
+.transfer_to,
+.transfer_text_amount,
+.transfer_amount
+{
+    width: 15%;
+    height: 1.75em;
+    text-align: center;
+
+    font-weight: bold;
+}
+
+.use_text_from,
+.use_text_amount,
+.transfer_text_from,
+.transfer_text_to,
+.transfer_text_amount {
+    margin: 0.2em;
+    color: rgb(75, 75, 75);
+}
+
+.use_from,
+.use_amount,
+.transfer_from,
+.transfer_to,
+.transfer_amount {
+    margin: .1em;
+    color: rgb(118, 118, 118);
+
+    /* Bordure */
+    border-radius: .25em;
+    border: 0.15em solid rgb(231, 220, 234);
+}
+
+#transfer_text_title, #use_text_title {
+    width: 100%;
+}
+
+.use_button, .transfer_button {
+    width: 20%;
+
+    display: flex;
+    justify-content: center;
+    justify-self: center;
+
+    background-color: rgb(198, 244, 230);
+
+    font-weight: bold;
+    color: rgb(142, 142, 142);
+
+    margin: 1em;
+
+    /* Bordure */
+    border-radius: .25em;
+    border: 0.15em solid rgb(168, 223, 218);
 }

@@ -40,7 +40,7 @@
             <div class="titleContainer">
                 <p class="titre">Spending</p>
             </div>
-            <p>&#x2022; Permet de retirer de l'argent dans la banque virtuel dans une catégorie.</p>
+            <p>&#x2022; Permet de retirer de l'argent dans la banque virtuel dans une catégorie ou bien de transférer un montant entre deux catégories.</p>
 
             <div class="titleContainer">
                 <p class="titre">Activity Stats</p>
@@ -68,7 +68,7 @@
             </div>
             <div class="b_newCategory">
                 <input class="b_newCategoryName" type="text" name="categoryName" value="" id="b_InputCategoryName"/>
-                <button class="b_addCategoryButton" id="b_addCategory">Add</button>
+                <button class="b_addCategoryButton" id="b_addCategory">Ajouter</button>
             </div>
         </section>
         <section id="s_earning">
@@ -83,8 +83,8 @@
                             <input class="t_delete" type="image" src="./img/trash-can-icon.png" />
                         </div>
                         <input class="t_moneyInput" id="t_input" type="number" name="Earned" value="0"/>
-                        <button class="t_addButton" id="t_add">Add to bank</button>
-                        <button class="t_addCategory" id="t_addCategory">Add category</button>
+                        <button class="t_addButton" id="t_add">Ajouter à la Banque</button>
+                        <button class="t_addCategory" id="t_addCategory">Ajouter catégorie</button>
                         <div class="t_categoriesContainer" id="conteneur_options">
 
                             <!-- Template contenant l'option -->
@@ -109,11 +109,37 @@
             </div>
             <div class="b_newCategory">
                 <input class="b_newCategoryName" type="text" name="categoryName" value="" id="t_InputConfigName"/>
-                <button class="b_addCategoryButton" id="t_addConfig">Add</button>
+                <button class="b_addCategoryButton" id="t_addConfig">Ajouter</button>
             </div>
         </section>
         <section id="s_spending">
             <h4><p class="titreSection">Spendings</p></h4>
+            <div class="action_container">
+                <div class="titleContainer2">
+                    <p class="titre" id="use_text_title">Dépenser de l'argent:</p>
+                </div>
+                <div class="choosing_container">
+                    <p class="use_text_from">De:</p>
+                    <select class="use_from" id="select_use_from"></select>
+                    <p class="use_text_amount">Montant:</p>
+                    <input class="use_amount" id="spending_amnt" type="number" name="valeur", value="0">
+                </div>
+                <button class="use_button" id="s_spend">Dépenser</button>
+            </div>
+            <div class="action_container">
+                <div class="titleContainer2">
+                    <p class="titre" id="transfer_text_title">Transférer de l'argent:</p>
+                </div>
+                <div class="choosing_container">
+                    <p class="transfer_text_from">De:</p>
+                    <select class="transfer_from" id="select_transfer_from"></select>
+                    <p class="transfer_text_to">Vers:</p>
+                    <select class="transfer_to" id="select_transfer_to"></select>
+                    <p class="transfer_text_amount">Montant:</p>
+                    <input class="transfer_amount" id="transferring_amnt" type="number" name="valeur", value="0">
+                </div>
+                <button class="transfer_button" id="s_transfer">Transférer</button>
+            </div>
         </section>
         <section id="s_activity">
             <h5><p class="titreSection">Activity</p></h5>

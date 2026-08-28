@@ -6,6 +6,9 @@ var userData = null; // User data will be loaded here
 var blank_userData = {
     "bankData": {
         "Autres": 0,
+        "Logement": 0,
+        "Nourriture": 0,
+        "Divertissement": 0,
     },
     "CategoriesData": [
         "Autres",
@@ -47,6 +50,7 @@ export async function categoriesList_add(categoryName) {
     if (!userData["CategoriesData"].find((element) => element == categoryName)) {
         // Catégorie non trouvée
         userData["CategoriesData"].push(categoryName);
+        userData["bankData"][categoryName] = 0;
         // Retour du résultat
         return true;
     }
@@ -59,7 +63,10 @@ export async function categoriesList_remove(categoryName) {
         // Catégorie trouvée
         userData["CategoriesData"].splice(index, 1) // Remove 1 element at index
         // Transférer l'argent virtuel de cette catégorie dans "Autres"
-
+        if (userData["bankData"][categoryName] != null) {
+            userData["bankData"]["Autres"] = userData["bankData"]["Autres"] + (+userData["bankData"][categoryName]);
+            delete userData["bankData"][categoryName];
+        }
         // Retour du résultat
         return true;
     }
@@ -136,12 +143,26 @@ export async function config_use(configName, amount) {
             return true;
         } else {
             if (sommePercentage != 100) {
-                return "La somme des pourcentage n'est pas égale à 100%!";
+                return "La somme est différente de 100%!";
             } else {
-                return "Argent insuffisant pour être répartit!";
+                return "Argent insuffisant!";
             }
         }
     }
+}
+
+export async function addMoney_to(categoryName, amount) {
+    if (userData["bankData"][categoryName] != null) {
+        userData["bankData"][categoryName] += (+amount);
+    }
+}
+export async function removeMoney_from(categoryName, amount) {
+    if (userData["bankData"][categoryName] != null) {
+        userData["bankData"][categoryName] -= (+amount);
+    }
+}
+export async function getReal_BankData() {
+    return userData["bankData"];
 }
 
 export async function getBankData() {
