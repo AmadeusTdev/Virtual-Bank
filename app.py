@@ -5,14 +5,15 @@ import webview
 from cryptography.fernet import Fernet
 
 def get_resource_path(relative_path):
-    """ Gestion du chemin absolu pour le dev et pour les exécutables compilés """
-    if hasattr(sys, '_MEIPASS'):
-        # Cas de PyInstaller
-        return os.path.join(sys._MEIPASS, relative_path)
-    elif hasattr(sys, 'frozen'):
-        # Cas de Nuitka / cx_Freeze
-        return os.path.join(os.path.dirname(sys.executable), relative_path) 
-    return os.path.join(os.path.abspath("."), relative_path)
+    """ Renvoie le chemin absolu vers la ressource """
+    if getattr(sys, 'frozen', False):
+        # En mode compilé (Nuitka --standalone), le dossier de l'exe est la racine
+        base_path = os.path.dirname(sys.executable)
+    else:
+        # En mode développement (python app.py)
+        base_path = os.path.dirname(os.path.abspath(__file__))
+
+    return os.path.join(base_path, relative_path)
 
 class API:
     def __init__(self):

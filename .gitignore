@@ -2,3 +2,5 @@ app.build
 app.dist
 app.onefile-build
 *.exe
+*.dist
+*.rar
