@@ -190,7 +190,7 @@ section {
     margin-top: .5em;
 }
 .b_categoryDelete {
-    width: 20%;
+    width: 15%;
 }
 
 .titleContainer2 {
@@ -525,4 +525,8 @@ section {
     /* Bordure */
     border-radius: .25em;
     border: 0.15em solid rgb(168, 223, 218);
+}
+.use_button:hover, .transfer_button:hover {
+    cursor: pointer;
+    background-color: rgb(198, 221, 203);
 }

@@ -38,6 +38,15 @@ async function loadUserData() {
         userData = blank_userData;
     }
 }
+//---------------------------------------------------------- SAVE User Data
+if (window.electronAPI) {
+    window.electronAPI.onApplicationClosing(async () => {
+        // Save file
+        await saveFile(JSON.stringify(userData));
+        // Dire à Electron que la sauvegarde est terminée
+        window.electronAPI.saveComplete();
+    });
+}
 
 //---------------------------------------------------------- Get / Set / Modify User Data
 export async function getCategoriesData() {
@@ -51,6 +60,8 @@ export async function categoriesList_add(categoryName) {
         // Catégorie non trouvée
         userData["CategoriesData"].push(categoryName);
         userData["bankData"][categoryName] = 0;
+        // Save file
+        await saveFile(JSON.stringify(userData));
         // Retour du résultat
         return true;
     }
@@ -67,6 +78,8 @@ export async function categoriesList_remove(categoryName) {
             userData["bankData"]["Autres"] = userData["bankData"]["Autres"] + (+userData["bankData"][categoryName]);
             delete userData["bankData"][categoryName];
         }
+        // Save file
+        await saveFile(JSON.stringify(userData));
         // Retour du résultat
         return true;
     }
@@ -82,6 +95,8 @@ export async function config_option_remove(configName, optionIndex) {
     if (userData["EarningsData"]["Configs"][configName] != null) {
         if (userData["EarningsData"]["Configs"][configName][optionIndex] != null) {
             delete userData["EarningsData"]["Configs"][configName][optionIndex];
+            // Save file
+            await saveFile(JSON.stringify(userData));
             // Retour du résultat
             return true;
         }
@@ -91,6 +106,8 @@ export async function config_option_remove(configName, optionIndex) {
 export async function config_option_modify(configName, optionIndex, newValue) {
     if (userData["EarningsData"]["Configs"][configName] != null) {
         userData["EarningsData"]["Configs"][configName][optionIndex] = newValue;
+        // Save file
+        await saveFile(JSON.stringify(userData));
     }
 }
 export async function config_add(configName) {
@@ -98,6 +115,9 @@ export async function config_add(configName) {
         userData["EarningsData"]["Configs"][configName] = {
             "op0": ["Autres", 100, "%"],
         }
+        // Save file
+        await saveFile(JSON.stringify(userData));
+
         return true;
     }
     return false;
@@ -105,6 +125,9 @@ export async function config_add(configName) {
 export async function config_remove(configName) {
     if (userData["EarningsData"]["Configs"][configName] != null) {
         delete userData["EarningsData"]["Configs"][configName];
+        // Save file
+        await saveFile(JSON.stringify(userData));
+
         return true;
     }
     return false;
@@ -122,7 +145,6 @@ export async function config_use(configName, amount) {
             } else if (option[2] == "€") {
                 sommeEuros = sommeEuros + (+option[1]);
             }
-            console.log(option);
         }
 
         if (sommePercentage == 100 && sommeEuros <= amount) {
@@ -140,6 +162,9 @@ export async function config_use(configName, amount) {
                 }
             }
 
+            // Save file
+            await saveFile(JSON.stringify(userData));
+
             return true;
         } else {
             if (sommePercentage != 100) {
@@ -155,11 +180,15 @@ export async function addMoney_to(categoryName, amount) {
     if (userData["bankData"][categoryName] != null) {
         userData["bankData"][categoryName] += (+amount);
     }
+    // Save file
+    await saveFile(JSON.stringify(userData));
 }
 export async function removeMoney_from(categoryName, amount) {
     if (userData["bankData"][categoryName] != null) {
         userData["bankData"][categoryName] -= (+amount);
     }
+    // Save file
+    await saveFile(JSON.stringify(userData));
 }
 export async function getReal_BankData() {
     return userData["bankData"];
