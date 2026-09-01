@@ -13,7 +13,7 @@ Il y'a 5 parties différentes:
 
 - **Bank Stats:** Affiche la répartition de l'argent dans les différentes catégories de la banque virtuel et permet la création ou destruction de catégories.
 
-- **Earnings:** Permet de configurer des configurations possédant chacune leur propre répartition d'une somme d'argent pour ensuite ajouter de l'argent à la banque virtuel. (Example: Configuration "Salaire").
+- **Earnings:** Permet de configurer des configurations possédant chacune leur propre répartition d'une somme d'argent pour ensuite ajouter de l'argent à la banque virtuel. (Exemple: Configuration "Salaire").
 
 - **Spendings:** Permet de retirer de l'argent de la banque virtuel ou bien de transférer un montant entre deux catégories.
 
