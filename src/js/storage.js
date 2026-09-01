@@ -1,60 +1,36 @@
-const fileName = "VBankMonitorData.json"
+// Attendre que PyWebView soit complètement initialisé
+window.addEventListener('pywebviewready', () => {
+    console.log("PyWebView est prêt !");
+});
 
-// Electron pour Windows et Capacitor pour Android
-function getPlatform() {
-    // Windows
-    if (window.electronAPI) {
-        return "windows";
-    }
-    // Android
-    if (window.Capacitor) {
-        return window.Capacitor.getPlatform();
-    }
-    // Web
-    return "web";
-}
-
-export async function saveFile(content) {
-    // demander au système de stockage
-    const platform = getPlatform();
-
-    // windows
-    if (platform === "windows") {
-        await window.electronAPI.saveFile(fileName, content);
-        return;
-    }
-    // android
-    if (platform === "android") {
-        await saveFileAndroid(fileName, content);
-        return;
-    }
-    // plateforme non supportée
-    throw new Error(
-        "Plateforme non supportée : " + platform
-    );
-}
-
+// Fonction pour déclencher le chargement d'un fichier
 export async function loadFile() {
-    // demander au système de stockage
-    const platform = getPlatform();
+    try {
+        const response = await window.pywebview.api.charger_donnees_auto();
+        
+        if (response.success) {
+            return response.data;
+        } else {
+            alert("Erreur lors de la lecture : " + response.error);
+        }
+    } catch (err) {
+        console.error("Erreur d'appel API :", err);
+    }
+}
 
-    // windows
-    if (platform === "windows") {
-        return await window.electronAPI.loadFile(fileName);
+// Fonction pour déclencher la sauvegarde
+export async function saveFile(content) {
+    try {
+        const response = await window.pywebview.api.sauvegarder_donnees_auto(content);
+        
+        if (response.success) {
+            //alert("Fichier enregistré sous : " + response.path); --// On n'a pas besoin d'informer l'utilisateur que le fichier a été sauvegardé, car il est sauvegardé automatiquement.
+        } else {
+            alert("Erreur lors de la sauvegarde : " + response.error);
+        }
+    } catch (err) {
+        console.error("Erreur d'appel API :", err);
     }
-    // android
-    if (platform === "android") {
-        return await loadFileAndroid(fileName);
-    }
-    // web (pour dev l'application)
-    if (platform === "web") {
-        return null
-    }
-
-    // plateforme non supportée
-    throw new Error(
-        "Plateforme non supportée : " + platform
-    );
 }
 
 async function saveFileAndroid(filename, content) {

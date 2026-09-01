@@ -29,20 +29,24 @@ async function loadUserData() {
     if (userData == null || userData == "") {
         var gotData = await loadFile();
         // Convert and store data if it's not empty
-        if (gotData != null && gotData != "") {
+        if (gotData != null && gotData != "" && Object.keys(gotData).length > 0) {
             userData = JSON.parse(gotData);
+            //userData = gotData; // The backend already converts the JSON string to an object before returning it
         }
     }
+    console.log("User data loaded:", userData);
     // If user data is still empty we load blank one
     if (userData == null || userData == "") {
         userData = blank_userData;
     }
+    console.log("User data loaded after:", userData);
 }
 //---------------------------------------------------------- SAVE User Data
 if (window.electronAPI) {
     window.electronAPI.onApplicationClosing(async () => {
         // Save file
-        await saveFile(JSON.stringify(userData));
+        /*await saveFile(JSON.stringify(userData));*/
+        await saveFile(userData); // Le backend convertit déjà l'objet en JSON avant de le sauvegarder
         // Dire à Electron que la sauvegarde est terminée
         window.electronAPI.saveComplete();
     });
